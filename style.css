@@ -1,0 +1,44 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+   background:url(./img/0468f09c2a7feb90eb6e05a1908c783a.jpg) no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+  }
+  input[type="text"] {
+
+    background-color : #cef2f4;
+  
+
+  }
+  h1{
+    color: #115a9a;
+    margin-left: 40%;
+  }
+  #chat {
+   margin-left: 10%;
+    width: 80%;
+    height: 300px;
+    border: 1px solid #000;
+    padding: 10px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+  }
+  #message {
+    margin-left: 10%;
+    width: 70%;
+    padding: 10px;
+    font-size: 14px;
+  }
+  #sendBtn {
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #115a9a;
+    color: #f6f6f4;
+    border-radius:10px ;
+    -webkit-border-radius:10px ;
+    -moz-border-radius:10px ;
+    -ms-border-radius:10px ;
+    -o-border-radius:10px ;
+} 

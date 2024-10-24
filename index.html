@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Чат</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>WebSocket Чат</h1>
+
+  <div id="chat"></div>
+
+  <input type="text" id="message" placeholder="Введите сообщение">
+  <button id="sendBtn">Отправить</button>
+
+  <script>
+    // Подключение к WebSocket-серверу
+    const socket = new WebSocket('ws://localhost:8080');
+    console.log("Соединение установлено");
+    const chat = document.getElementById('chat');
+    const messageInput = document.getElementById('message');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Функция для отображения сообщений в чате
+    function appendMessage(message) {
+      const newMessage = document.createElement('div');
+      newMessage.textContent = message;
+      chat.appendChild(newMessage);
+      chat.scrollTop = chat.scrollHeight;  // Автопрокрутка вниз
+    }
+
+    // Событие при подключении к серверу
+    socket.onopen = () => {
+      appendMessage('Соединение с чатом установлено');
+    };
+
+   // Обработка сообщения от сервера
+   socket.onmessage = (event) => {
+      // Проверяем, является ли сообщение Blob
+      if (typeof event.data === 'object' && event.data instanceof Blob) {
+        // Преобразование Blob в текст
+        const reader = new FileReader();
+        reader.onload = function () {
+          appendMessage(reader.result);  // Добавляем текстовое сообщение
+        };
+        reader.readAsText(event.data);  // Чтение Blob как текст
+      } else {
+        // Если сообщение уже текстовое
+        appendMessage(event.data);
+      }
+    };
+
+    // Событие при закрытии соединения
+    socket.onclose = () => {
+      appendMessage('Соединение закрыто');
+    };
+
+    // Обработка отправки сообщения
+    function sendMessage() {
+      const message = messageInput.value;
+      if (message.trim()) {
+        socket.send(message);  // Отправка сообщения на сервер
+        messageInput.value = '';  // Очистка поля ввода
+      }
+    }
+
+    // Обработка нажатия кнопки "Отправить"
+    sendBtn.addEventListener('click', sendMessage);
+
+    // Обработка нажатия клавиши Enter для отправки сообщения
+    messageInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+
+</body>
+</html>
